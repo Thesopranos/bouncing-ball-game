@@ -52,7 +52,7 @@ class Bar:
       self.start_position[1] -= 5
       self.left_side -= 5
       
-      if self.right_side <= 0:
+      if self.right_side <= self.bar_length:
         self.right_side = self.bar_length
         self.left_side = 0
         self.start_position[0] = self.left_side
@@ -89,12 +89,9 @@ class Ball:
      
     if (self.bar_status[0]-5 <= self.position_X <= self.bar_status[1] + 5) and (self.bar_status[2]-5 <= self.position_Y <= self.bar_status[3]+5):
         self.down_status = not self.down_status
-    print(self.position_Y)
-    
-      
-      
-    print(self.touch_status, self.sayac)
-    # if  self.position_Y < 100:
+
+    if  self.position_Y > self.bar_status[3]+100:
+        sys.exit()
         
     if self.up_status == 1 or self.down_status == 1:
         self.speed_Y = -self.speed_Y
