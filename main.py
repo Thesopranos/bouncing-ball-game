@@ -123,7 +123,7 @@ while True:
   bar_y2 = bar_list[3]
   
   cv2.rectangle(background, (bar_x1, bar_y1), (bar_x2, bar_y2),   (0,0,0), -1)
-  cv2.circle(background,(ball_pos_x, ball_pos_y),2,0,-1)
+  cv2.circle(background,(ball_pos_x, ball_pos_y),3,0,-1)
   
   cv2.imshow("game",background)
   
