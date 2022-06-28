@@ -29,6 +29,7 @@ class Bar:
     self.uses_background = uses_background
     self.up_side = SIZE_Y - 205 # alttan 205 px = 495
     self.bar_speed = 10
+    
   def movingBar(self, direction = None):
     self.direction = direction
 
@@ -46,7 +47,6 @@ class Bar:
         self.start_position[0] = self.left_side
         self.start_position[1] = self.right_side
     
-      
     elif self.direction == "left":
       self.start_position[0] -= self.bar_speed
       self.right_side -= self.bar_speed
@@ -82,36 +82,34 @@ class Ball:
     self.direction = direction
     
     if self.position_X <= 0:
-        self.left_status = not self.left_status
+      self.left_status = not self.left_status
     
     if self.position_X >= SIZE_X:
-        self.rigth_status = not self.rigth_status
+      self.rigth_status = not self.rigth_status
         
     if self.position_Y <= 0:
         self.up_status = not self.up_status
     
     if (self.bar_status[0] <= self.position_X <= self.bar_status[1]) and (self.bar_status[2] <= self.position_Y <= self.bar_status[3]) and self.hit == 0:
         
-        if self.direction == "rigth" and (10 < self.speed_X or self.speed_Y < 10):
-          self.speed_X += 2
-          self.speed_Y -= 2
-          
-        elif self.direction == "left" and (10 < self.speed_X or self.speed_Y < 10):
-          self.speed_X -= 2
-          self.speed_Y += 2
+      if self.direction == "rigth" and (10 < self.speed_X or self.speed_Y < 10):
+        self.speed_X += 2
+  
+      elif self.direction == "left" and (10 < self.speed_X or self.speed_Y < 10):
+        self.speed_X -= 2
 
-        self.hit = not self.hit
-        self.speed_Y = -self.speed_Y
+      self.hit = not self.hit
+      self.speed_Y = -self.speed_Y
 
     if  self.position_Y > self.bar_status[3]+100:
-        sys.exit()
+      sys.exit()
         
     if self.up_status == 1:
-        self.hit = 0
-        self.speed_Y = -self.speed_Y
+      self.hit = 0
+      self.speed_Y = -self.speed_Y
     
     if self.rigth_status == 1 or self.left_status == 1:
-        self.speed_X = -self.speed_X
+      self.speed_X = -self.speed_X
         
     return self.position_X, self.position_Y
 
@@ -119,6 +117,7 @@ bar = Bar(uses_background = background)
 ball = Ball(uses_background = background)
 bar_status = []
 direction = None
+
 while True:
   bar_list = bar.movingBar(direction = direction)
   bar_x1 = bar_list[0]
@@ -127,7 +126,6 @@ while True:
   bar_y2 = bar_list[3]
 
   if keyboard.is_pressed('d'):
-
     direction = "rigth"
   
   elif keyboard.is_pressed('a'):
@@ -138,7 +136,6 @@ while True:
   
   ball_pos_x, ball_pos_y = ball.movingBall(bar_status = bar_list, direction = direction)
 
-  
   cv2.rectangle(background, (bar_x1, bar_y1), (bar_x2, bar_y2),   (0,0,0), -1)
   cv2.circle(background,(ball_pos_x, ball_pos_y),3,0,-1)
   
