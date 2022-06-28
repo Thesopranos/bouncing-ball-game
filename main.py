@@ -30,34 +30,38 @@ class Bar:
     self.up_side = SIZE_Y - 205 # alttan 205 px = 495
     
   def movingBar(self, direction = None):
-    
-    if direction == "rigth":
+    self.direction = direction
+
+    if self.direction == "rigth":
       self.start_position[0] += 5
       self.right_side += 5
       
       self.start_position[1] += 5
       self.left_side += 5
-      
+      self.direction = None
       if self.right_side >= SIZE_X:
         self.right_side = SIZE_X
         self.left_side = SIZE_X - self.bar_length
         
         self.start_position[0] = self.left_side
         self.start_position[1] = self.right_side
-        
-    elif direction == "left":
+    
+      
+    elif self.direction == "left":
       self.start_position[0] -= 5
       self.right_side -= 5
-      
+
       self.start_position[1] -= 5
       self.left_side -= 5
-      
+      self.direction = None
       if self.right_side <= self.bar_length:
         self.right_side = self.bar_length
         self.left_side = 0
         self.start_position[0] = self.left_side
         self.start_position[1] = self.right_side
     
+    
+      
     return self.start_position
   
 class Ball:
@@ -72,6 +76,7 @@ class Ball:
     self.left_status = 0
     self.position_X = 0
     self.position_Y = 0
+    self.hit = 0
     
   def movingBall(self, bar_status):
     self.position_X += self.speed_X
@@ -86,14 +91,16 @@ class Ball:
         
     if self.position_Y <= 0:
         self.up_status = not self.up_status
-     
-    if (self.bar_status[0]-5 <= self.position_X <= self.bar_status[1] + 5) and (self.bar_status[2]-5 <= self.position_Y <= self.bar_status[3]+5):
-        self.down_status = not self.down_status
+    
+    if (self.bar_status[0] <= self.position_X <= self.bar_status[1]) and (self.bar_status[2] <= self.position_Y <= self.bar_status[3]) and self.hit == 0:
+        self.hit = not self.hit
+        self.speed_Y = -self.speed_Y
 
     if  self.position_Y > self.bar_status[3]+100:
         sys.exit()
         
-    if self.up_status == 1 or self.down_status == 1:
+    if self.up_status == 1:
+        self.hit = 0
         self.speed_Y = -self.speed_Y
     
     if self.rigth_status == 1 or self.left_status == 1:
@@ -108,26 +115,29 @@ direction = None
 while True:
   bar_list = bar.movingBar(direction = direction)
   
-  ball_pos_x, ball_pos_y = ball.movingBall(bar_status = bar_list)
+
 
   if keyboard.is_pressed('d'):
     direction = "rigth"
   
   elif keyboard.is_pressed('a'):
     direction = "left"
-  
+  else:
+    direction = None
+    
   bar_list = bar.movingBar(direction = direction)
   bar_x1 = bar_list[0]
   bar_x2 = bar_list[1]
   bar_y1 = bar_list[2]
   bar_y2 = bar_list[3]
   
+  ball_pos_x, ball_pos_y = ball.movingBall(bar_status = bar_list)
+
+  
   cv2.rectangle(background, (bar_x1, bar_y1), (bar_x2, bar_y2),   (0,0,0), -1)
   cv2.circle(background,(ball_pos_x, ball_pos_y),3,0,-1)
   
   cv2.imshow("game",background)
-  
-  direction == None
   
   background = clean_background.copy()
   
