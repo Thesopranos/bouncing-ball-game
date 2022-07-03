@@ -40,6 +40,7 @@ class Bar:
       self.start_position[1] += self.bar_speed
       self.left_side += self.bar_speed
       self.direction = None
+      
       if self.right_side >= SIZE_X:
         self.right_side = SIZE_X
         self.left_side = SIZE_X - self.bar_length
@@ -53,6 +54,7 @@ class Bar:
       self.start_position[1] -= self.bar_speed
       self.left_side -= self.bar_speed
       self.direction = None
+      
       if self.right_side <= self.bar_length:
         self.right_side = self.bar_length
         self.left_side = 0
@@ -117,6 +119,7 @@ bar = Bar(uses_background = background)
 ball = Ball(uses_background = background)
 bar_status = []
 direction = None
+
 
 while True:
   bar_list = bar.movingBar(direction = direction)
